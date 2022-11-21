@@ -1,0 +1,63 @@
+<div>
+  <center>
+    <h1>2048</h1>
+  </center>
+</div>
+
+<div>
+  <form phx-submit="new_game">
+    <div class="slider">
+      <p>Board Size</p>
+      <input type="range" name="board_size" min="3" max="12" value="6" oninput="rangeValue.innerText = this.value"
+        class="form-control">
+      <p id="rangeValue">6</p>
+    </div>
+    <div>
+      <p>Number of obstacles</p>
+      <input type="range" name="obstacle_count" min="0" max="30" value="0" oninput="rangeValue2.innerText = this.value"
+        class="form-control">
+      <p id="rangeValue2">0</p>
+    </div>
+
+    <span class="input-group-append">
+      <button type="submit" class="btn btn-info btn-flat">New Game</button>
+    </span>
+  </form>
+</div>
+
+<div>
+  Current Score: <%= @game.score %>
+</div>
+
+<div>
+  <table>
+    <tbody>
+      <%= for row <- @game.board.rows do %>
+        <tr>
+          <%= for val <- row do %>
+            <td>
+              <%= val %>
+            </td>
+            <% end %>
+        </tr>
+        <% end %>
+    </tbody>
+  </table>
+</div>
+
+<div id="keyup" phx-window-keyup="move"></div>
+
+<%= if @game.game_over==true do %>
+  <div id="popup1" class="overlay">
+    <div class="popup">
+      <%= if @game.game_won==true do %>
+        <h2>YOU WON!</h2>
+        <% else %>
+          <h2>Game Over</h2>
+          <% end %>
+            <div class="content">
+              Congratulations! Your final score is <%= @game.score %>!
+            </div>
+    </div>
+  </div>
+  <% end %>
